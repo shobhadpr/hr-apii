@@ -9,5 +9,5 @@ RUN rm -rf apache-tomcat-9.0.80.tar.gz
 RUN mv apache-tomcat-9.0.80 tomcat9
 RUN cp /target/hr-api.war /app/tomcat9/webapps
 EXPOSE 8080
-CMD ["/opt/tomcat9/bin/catalina.sh", "run"]
+CMD ["/app/tomcat9/bin/catalina.sh", "run"]
 
