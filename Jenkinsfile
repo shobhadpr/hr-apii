@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment{
+        TAG = "${getTag()}"
+    }
 
     stages {
         stage('git checkout') {
@@ -17,8 +20,7 @@ pipeline {
         stage('Docker build') {
             steps {
                 script{
-                   def tag = sh returnStdout: true, script: 'git log --oneline -1 | awk \'{print $1}\''
-                   sh "docker build . -t 776550/hr-api:${tag} "
+                    sh "docker build . -t 776550/hr-api:${env.TAG} "
                 }
             }
             
@@ -29,11 +31,8 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'Docker-hub', passwordVariable: 'pswd', usernameVariable: 'user')]) {
                        sh "docker login -u ${user} -p ${pswd}"
                     }
-                    script{
+                      sh "docker push 776550/hr-api:${env.TAG}"
                     
-                      def tag = sh returnStdout: true, script: 'git log --oneline -1 | awk \'{print $1}\''
-                      sh "docker push 776550/hr-api:${tag}"
-                    }
                 }
             }
             
@@ -42,11 +41,15 @@ pipeline {
             steps {
                 sshagent(['ec2-user']) {
                          sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.33.203 docker rm -f docker"
-                         sh "ssh ec2-user@172.31.33.203 docker run -d -p 9090:8080 --name docker 776550/hr-api:9d528f5"
+                         sh "ssh ec2-user@172.31.33.203 docker run -d -p 9090:8080 --name docker 776550/hr-api:${env.TAG}"
                 }
                 
             }
             
         }
     }
+}
+def getTag(){
+    def tag = sh returnStdout: true, script: 'git log --oneline -1 | awk \'{print $1}\''
+    return tag
 }
