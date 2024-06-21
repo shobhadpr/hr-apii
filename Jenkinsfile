@@ -14,5 +14,11 @@ pipeline {
             }
             
         }
+        stage('Docker build') {
+            steps {
+                sh 'docker build -t 776550/hr-abc:v1'
+            }
+            
+        }
     }
 }
