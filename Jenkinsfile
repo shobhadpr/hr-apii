@@ -36,5 +36,11 @@ pipeline {
             }
             
         }
+        stage('Docker Deploy-DEV') {
+            steps {
+                sh "docker run -d -p 9090:8080 --name cicd 776550/hr-api:${tag}"
+            }
+            
+        }
     }
 }
