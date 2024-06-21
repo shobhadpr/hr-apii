@@ -26,8 +26,9 @@ pipeline {
         stage('Docker Push') {
             steps {
                 script{
-                   def tag = sh returnStdout: true, script: 'git log --oneline -1 | awk \'{print $1}\''
-                   sh "docker push 776550/hr-api:${tag}"
+                    sh "docker login -u"
+                    def tag = sh returnStdout: true, script: 'git log --oneline -1 | awk \'{print $1}\''
+                    sh "docker push 776550/hr-api:${tag}"
                 }
             }
             
