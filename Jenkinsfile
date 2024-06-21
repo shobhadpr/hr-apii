@@ -38,7 +38,10 @@ pipeline {
         }
         stage('Docker Deploy-DEV') {
             steps {
-                sh "docker run -d -p 9090:8080 --name cicd 776550/hr-api:${tag}"
+                sshagent(['ec2-user']) {
+                         sh "ssh ec2-user@172.31.33.203 docker run -d -p 9090:8080 --name cicd 776550/hr-api:${tag}"
+                }
+                
             }
             
         }
