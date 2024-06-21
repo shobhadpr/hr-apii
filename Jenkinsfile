@@ -26,7 +26,10 @@ pipeline {
         stage('Docker Push') {
             steps {
                 script{
-                    sh "docker login -u"
+                    withCredentials([usernamePassword(credentialsId: 'Docker-hub', passwordVariable: 'pswd', usernameVariable: 'user')]) {
+                       sh "docker login -u ${user} -p ${pswd}"
+                    }
+                    
                     def tag = sh returnStdout: true, script: 'git log --oneline -1 | awk \'{print $1}\''
                     sh "docker push 776550/hr-api:${tag}"
                 }
