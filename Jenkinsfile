@@ -17,7 +17,7 @@ pipeline {
         stage('Docker build') {
             steps {
                 Script{
-                   def tag=sh returnStdout: true, script: 'git log --oneline -1 | awk \'{print $1}\''
+                   def tag = sh returnStdout: true, script: 'git log --oneline -1 | awk \'{print $1}\''
                    sh 'docker build -t 776550/hr-abc:${tag} .'
                 }
             }
