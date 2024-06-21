@@ -50,6 +50,6 @@ pipeline {
     }
 }
 def getTag(){
-    def tag = sh returnStdout: true, script: 'git log --oneline -1 | awk \'{print $1}\''
+    def tag = sh returnStdout: true, script: 'git rev-parse --short HEAD'
     return tag
 }
