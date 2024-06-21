@@ -1,11 +1,6 @@
-From alpine:latest
-LABEL AUTHOR "JAVA HOME"
-RUN apk add openjdk17-jre
-WORKDIR /opt
-ADD https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.25/bin/apache-tomcat-10.1.25.tar.gz .
-RUN tar xf apache-tomcat-10.1.25.tar.gz
-RUN rm -rf apache-tomcat-10.1.25.tar.gz
-RUN mv apache-tomcat-10.1.25 tomcat10
-COPY target/hr-api.war /opt/tomcat10/webapps
-EXPOSE 9090
-CMD ["/opt/tomcat10/bin/catalina.sh","run"]
+FROM maven:3.8.1-jdk-11-slim AS build
+LABEL AUTHOR="Java Home"
+WORKDIR /app
+COPY . . #copy everything from local means pom file , src ---etc
+RUN mvn clean package
+
