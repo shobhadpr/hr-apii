@@ -42,7 +42,7 @@ pipeline {
             steps {
                 sshagent(['ec2-user']) {
                          
-                         sh "ssh ec2-user@172.31.33.203 docker run -d -p 9090:8080 776550/hr-api:${tag}"
+                         sh "ssh ec2-user@172.31.33.203 docker run -d -p 9090:8080 776550/hr-api:9d528f5"
                 }
                 
             }
